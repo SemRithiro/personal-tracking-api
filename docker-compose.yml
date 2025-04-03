@@ -1,0 +1,26 @@
+services:
+    database-app:
+        image: mysql:8.0
+        container_name: database-container
+        environment:
+            MYSQL_ROOT_PASSWORD: P@ssw0rd()
+        ports:
+            - '3306:3306'
+        volumes:
+            - './configuration/db:/var/lib/mysql/'
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+            interval: 10s
+            retries: 5
+            timeout: 5s
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 5
+                window: 90s
+        networks:
+            - RITHIRONETWORK
+
+networks:
+    RITHIRONETWORK:
