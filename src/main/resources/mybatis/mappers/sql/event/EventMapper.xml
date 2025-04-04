@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rithiro.personaltracking.modules.event.mappers.EventMapper">
+    <sql id="BASE_COLUMN_LIST">
+        `subscribed_events`.id,
+        `subscribed_events`.name,
+        `subscribed_events`.url,
+        `subscribed_events`.color,
+        `subscribed_events`.color_code
+    </sql>
+
+    <select id="getSubscribedEvents">
+        SELECT
+            <include refid="BASE_COLUMN_LIST"></include>,
+            c.username AS `created.name`,
+            c.created_at AS `created.timestamp`,
+            m.username AS `modified.name`,
+            m.modified_at AS `modified.timestamp`
+        FROM `subscribed_events`
+        LEFT JOIN `users` c ON c.id = `subscribed_events`.created_by
+        LEFT JOIN `users` m ON m.id = `subscribed_events`.modified_by
+        WHERE
+            `subscribed_events`.created_by = #{id} AND
+            `subscribed_events`.is_active = 1
+    </select>
+</mapper>

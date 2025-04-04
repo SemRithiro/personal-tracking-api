@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rithiro.personaltracking.mappers.UserMapper">
+    <select id="findByUsername">
+        SELECT
+            `users`.id,
+            `users`.auth_id,
+            `users`.username,
+            `users`.password
+        FROM `users`
+        WHERE `users`.username = '${username}' AND `users`.is_active = 1
+    </select>
+
+    <select id="findUserByAuthId">
+        SELECT
+            `users`.id,
+            `users`.username,
+            `users`.first_name,
+            `users`.last_name,
+            `users`.gender,
+            `users`.email,
+            c.username AS `created.name`,
+            c.created_at AS `created.timestamp`,
+            m.username AS `modified.name`,
+            m.modified_at AS `modified.timestamp`
+        FROM `users`
+        LEFT JOIN `users` c ON c.id = `users`.created_by
+        LEFT JOIN `users` m ON m.id = `users`.modified_by
+        WHERE `users`.auth_id = #{authId} AND `users`.is_active = 1 LIMIT 1;
+    </select>
+</mapper>

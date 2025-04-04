@@ -1,6 +1,7 @@
 package com.rithiro.personaltracking.configs;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -16,9 +17,12 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException authException) throws IOException, ServletException {
-        response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"Invalid or missing token\"}");
+        response.setContentType("application/json");
+        PrintWriter writer = response.getWriter();
+        writer.write(
+                "{\"header\": {\"errorText\": \"Unauthorize\", \"message\": \"Invalid or missing token.\"}}");
+        writer.flush();
     }
 
 }

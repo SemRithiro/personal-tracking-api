@@ -39,6 +39,7 @@ public class JwtTokenProvider {
     }
 
     @Bean
+    @Primary
     JwtDecoder primaryAccessTokenJwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(rsaKeyProperties.getAccessPublicKey()).build();
     }
@@ -49,7 +50,6 @@ public class JwtTokenProvider {
     }
 
     @Bean
-    @Primary
     JwtDecoder delegatingJwtDecoder() {
         return new DelegatingJwtDecoder(primaryAccessTokenJwtDecoder(), secondaryAccessTokenJwtDecoder());
     }

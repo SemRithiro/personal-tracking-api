@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.rithiro.personaltracking.models.databases.Oauth2AccessToken;
-import com.rithiro.personaltracking.services.Oauth2AccessTokenService;
+import com.rithiro.personaltracking.services.Oauth2Service;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,7 +26,7 @@ public class RevokedAccessTokenFilter extends OncePerRequestFilter {
     private String issuerUri;
 
     @Autowired
-    Oauth2AccessTokenService oauth2AccessTokenService;
+    Oauth2Service oauth2Service;
 
     @Override
     @SuppressWarnings("null")
@@ -37,7 +37,7 @@ public class RevokedAccessTokenFilter extends OncePerRequestFilter {
                 && authentication.isAuthenticated()) {
             Jwt jwt = (Jwt) authentication.getCredentials();
             if (!(jwt.getClaimAsString("iss").equals(issuerUri))) {
-                Oauth2AccessToken oauth2AccessToken = oauth2AccessTokenService
+                Oauth2AccessToken oauth2AccessToken = oauth2Service
                         .verifyRevokedAccessToken(jwt.getId());
                 if (oauth2AccessToken == null || oauth2AccessToken.getRevoked()) {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());

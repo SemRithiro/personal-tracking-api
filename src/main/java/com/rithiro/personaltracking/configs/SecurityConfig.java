@@ -25,7 +25,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.rithiro.personaltracking.configs.helpers.JwtTokenProvider;
 import com.rithiro.personaltracking.models.properties.CorsProperties;
-import com.rithiro.personaltracking.services.Oauth2AccessTokenService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,9 +35,6 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
-
-    @Autowired
-    Oauth2AccessTokenService oauth2AccessTokenService;
 
     @Autowired
     JwtTokenProvider jwtTokenProvider;
