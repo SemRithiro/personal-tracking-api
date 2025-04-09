@@ -1,4 +1,4 @@
-package com.rithiro.personaltracking.services.Impl;
+package com.rithiro.personaltracking.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;

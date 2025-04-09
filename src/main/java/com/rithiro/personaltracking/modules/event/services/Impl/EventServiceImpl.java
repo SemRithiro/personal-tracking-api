@@ -1,4 +1,4 @@
-package com.rithiro.personaltracking.modules.event.services.Impl;
+package com.rithiro.personaltracking.modules.event.services.impl;
 
 import java.util.List;
 
@@ -23,8 +23,8 @@ public class EventServiceImpl implements EventService {
     EventMapper eventMapper;
 
     @Override
-    public List<SubscribedEventResponse> getSubscribedEvents() {
-        List<SubscribedEvent> subscribedEvents = eventMapper.getSubscribedEvents(1);
+    public List<SubscribedEventResponse> getSubscribedEvents(Integer id) {
+        List<SubscribedEvent> subscribedEvents = eventMapper.getSubscribedEvents(id);
         return subscribedEvents.stream().map(event -> objectMapper.convertValue(event, SubscribedEventResponse.class))
                 .toList();
     }

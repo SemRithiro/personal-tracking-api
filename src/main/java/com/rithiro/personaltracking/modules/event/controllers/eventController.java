@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rithiro.personaltracking.models.bases.baseResponses.ResponseMessage;
+import com.rithiro.personaltracking.models.responses.UserResponse;
 import com.rithiro.personaltracking.modules.event.models.responses.SubscribedEventResponse;
 import com.rithiro.personaltracking.modules.event.services.EventService;
+import com.rithiro.personaltracking.services.UserService;
 import com.rithiro.personaltracking.utils.ResponseMessageUtility;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,8 +28,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Validated
 @RestController
 @RequestMapping("/event")
-@Tag(name = "04. Event", description = "Event controller")
+@Tag(name = "05. Event", description = "Event controller")
 public class eventController {
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     EventService eventService;
@@ -57,7 +65,12 @@ public class eventController {
     // Customize
     @GetMapping("/subscribed-events")
     public ResponseEntity<ResponseMessage<List<SubscribedEventResponse>>> getSubscribedEvents() {
-        return ResponseMessageUtility.makeSuccessResponse(eventService.getSubscribedEvents(), "Success",
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Jwt jwt = (Jwt) authentication.getCredentials();
+        UserResponse userResponse = userService.findUserByAuthId(jwt.getClaimAsString("sub"));
+
+        return ResponseMessageUtility.makeSuccessResponse(eventService.getSubscribedEvents(userResponse.getId()),
+                "Success",
                 HttpStatus.OK);
     }
 }

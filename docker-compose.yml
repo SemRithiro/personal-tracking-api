@@ -3,6 +3,7 @@ services:
         image: mysql:8.0
         container_name: database-container
         environment:
+            TZ: Asia/Phnom_Penh
             MYSQL_ROOT_PASSWORD: P@ssw0rd()
         ports:
             - '3306:3306'

@@ -1,4 +1,4 @@
-package com.rithiro.personaltracking.services.Impl;
+package com.rithiro.personaltracking.services.impl;
 
 import java.util.Arrays;
 import java.util.Collection;
